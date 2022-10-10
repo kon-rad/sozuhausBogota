@@ -71,12 +71,18 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }: any
       
       return state.dao;
 
-    case 'set_address':;
+    case 'set_address':
 
       console.log('request.address ', request.address);
       state.dao.push(request.address);
 
       satAddress(request.address);
+
+    case 'confirm_notification':
+      // todo: set event listener to Smart Contract with state.dao[i] address
+      // use ABI from local state or uploaded state by user
+      // todo: upload ABI for new DAO contracts
+
     default:
       throw new Error('Method not found.');
   }
