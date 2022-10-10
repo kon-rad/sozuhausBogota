@@ -126,8 +126,8 @@ export const Home = () => {
 
   return (
     <Container>
-      <Heading>Notify</Heading>
-      <Subtitle>Get notified on new DAO proposals</Subtitle>
+      <Heading>NotifySnap</Heading>
+      <Subtitle>Get notified and Vote on new DAO proposals</Subtitle>
       <VStack>
           <Flex border="black" borderRadius="xl" p={20} m="12">
             <Input p={8} width="32em" size='md' placeholder="DAO Address" mr={18} borderRadius="6" value={daoAddress} onChange={(e: any) => setDaoAddress(e.target.value)} />

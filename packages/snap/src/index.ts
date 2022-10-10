@@ -19,6 +19,7 @@ async function getDaoAddress(): Promise<any> {
     method: 'snap_manageState',
     params: ['get'],
   });
+  console.log('inside getdaoaddress ', state);
   if (
     state === null
   ) {
@@ -48,6 +49,7 @@ async function satAddress(newState: any) {
  */
 export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }: any) => {
   const state = await getDaoAddress();
+  console.log("snap request ", origin, request);
 
   let daoAddress;
 
@@ -68,7 +70,6 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }: any
     case 'get_address':
       
       return state.dao;
-
 
     case 'set_address':;
 

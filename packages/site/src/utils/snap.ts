@@ -7,6 +7,8 @@ import { GetSnapsResponse, Snap } from '../types';
  * @returns The snaps installed in MetaMask.
  */
 export const getSnaps = async (): Promise<GetSnapsResponse> => {
+  console.log('get Snaps called');
+  
   return (await window.ethereum.request({
     method: 'wallet_getSnaps',
   })) as unknown as GetSnapsResponse;
@@ -22,6 +24,8 @@ export const connectSnap = async (
   snapId: string = defaultSnapOrigin,
   params: Record<'version' | string, unknown> = {},
 ) => {
+  console.log('connectSnap called - snapId, params', snapId, params);
+
   await window.ethereum.request({
     method: 'wallet_enable',
     params: [
@@ -43,6 +47,9 @@ export const connectSnap = async (
  * @returns The snap object returned by the extension.
  */
 export const getSnap = async (version?: string): Promise<Snap | undefined> => {
+
+  console.log('getSnap called - version', version);
+
   try {
     const snaps = await getSnaps();
     console.log('snaps -> ', snaps);
@@ -62,6 +69,8 @@ export const getSnap = async (version?: string): Promise<Snap | undefined> => {
  */
 
 export const setAddress = async (address: string) => {
+  console.log('setAddress called - address', address);
+
   await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: [
@@ -75,6 +84,8 @@ export const setAddress = async (address: string) => {
 };
 
 export const fetchAddress = async () => {
+  console.log('fetchAddress called ');
+
   const result: any = await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: [defaultSnapOrigin, { method: 'get_address' }],

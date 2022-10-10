@@ -5,4 +5,4 @@
 
 console.log('process.env.REACT_APP_SNAP_ORIGIN ', process.env.REACT_APP_SNAP_ORIGIN );
 export const defaultSnapOrigin =
-  process.env.REACT_APP_SNAP_ORIGIN ?? `local:http://localhost:3000`;
+  process.env.REACT_APP_SNAP_ORIGIN ?? `local:http://localhost:8080`;

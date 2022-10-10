@@ -60,7 +60,7 @@ export const Header = ({
   return (
     <HeaderWrapper>
       <LogoWrapper>
-        <Title>Notify</Title>
+        <Title>NotifySnap</Title>
       </LogoWrapper>
       <RightContainer>
         <Toggle
