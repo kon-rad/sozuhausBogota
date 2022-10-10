@@ -1,19 +1,15 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { VStack, Flex, Input, Button, Text } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
   connectSnap,
   getSnap,
-  sendHello,
-  shouldDisplayReconnectButton,
+  setAddress,
+  fetchAddress,
 } from '../utils';
-import {
-  ConnectButton,
-  InstallFlaskButton,
-  ReconnectButton,
-  SendHelloButton,
-} from './Buttons';
-import { Card } from './Card';
+
+window.ethereum as any;
 
 const Container = styled.div`
   display: flex;
@@ -35,10 +31,6 @@ const Heading = styled.h1`
   margin-top: 0;
   margin-bottom: 2.4rem;
   text-align: center;
-`;
-
-const Span = styled.span`
-  color: ${(props) => props.theme.colors.primary.default};
 `;
 
 const Subtitle = styled.p`
@@ -101,6 +93,12 @@ const ErrorMessage = styled.div`
 
 export const Home = () => {
   const [state, dispatch] = useContext(MetaMaskContext);
+  const [daoAddress, setDaoAddress] = useState<string>('');
+  const [savedAddress, setSavedAddress] = useState<string>('');
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
 
   const handleConnectClick = async () => {
     try {
@@ -117,96 +115,26 @@ export const Home = () => {
     }
   };
 
-  const handleSendHelloClick = async () => {
+  const handleSetAddressClick = async () => {
     try {
-      await sendHello();
+      await setAddress(daoAddress);
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
     }
-  };
+  }
 
   return (
     <Container>
-      <Heading>
-        Welcome to <Span>template-snap</Span>
-      </Heading>
-      <Subtitle>
-        Get started by editing <code>src/index.ts</code>
-      </Subtitle>
-      <CardContainer>
-        {state.error && (
-          <ErrorMessage>
-            <b>An error happened:</b> {state.error.message}
-          </ErrorMessage>
-        )}
-        {!state.isFlask && (
-          <Card
-            content={{
-              title: 'Install',
-              description:
-                'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
-              button: <InstallFlaskButton />,
-            }}
-            fullWidth
-          />
-        )}
-        {!state.installedSnap && (
-          <Card
-            content={{
-              title: 'Connect',
-              description:
-                'Get started by connecting to and installing the example snap.',
-              button: (
-                <ConnectButton
-                  onClick={handleConnectClick}
-                  disabled={!state.isFlask}
-                />
-              ),
-            }}
-            disabled={!state.isFlask}
-          />
-        )}
-        {shouldDisplayReconnectButton(state.installedSnap) && (
-          <Card
-            content={{
-              title: 'Reconnect',
-              description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
-              button: (
-                <ReconnectButton
-                  onClick={handleConnectClick}
-                  disabled={!state.installedSnap}
-                />
-              ),
-            }}
-            disabled={!state.installedSnap}
-          />
-        )}
-        <Card
-          content={{
-            title: 'Send Hello message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
-                disabled={false}
-              />
-            ),
-          }}
-          disabled={false}
-          fullWidth={false}
-        />
-        <Notice>
-          <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
-          </p>
-        </Notice>
-      </CardContainer>
+      <Heading>Notify</Heading>
+      <Subtitle>Get notified on new DAO proposals</Subtitle>
+      <VStack>
+          <Flex border="black" borderRadius="xl" p={20} m="12">
+            <Input p={8} width="32em" size='md' placeholder="DAO Address" mr={18} borderRadius="6" value={daoAddress} onChange={(e: any) => setDaoAddress(e.target.value)} />
+            <Button onClick={handleSetAddressClick}>notify me</Button>
+            <Text mt={12} fontSize="lg">{savedAddress}</Text>
+          </Flex>
+      </VStack>
     </Container>
   );
 };
